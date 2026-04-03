@@ -1,0 +1,34 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Logs
+*.log
+/log/
+logs/
+/target/log/
+
+# Test reports and generated artifacts
+/target/surefire-reports/
+/target/screenshots/
+/screenshots/
+
+# Compiled Java classes
+*.class
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Other common local files
+*.tmp
+*.swp
+
+# Keep repository clean from personal editor metadata
+*.log.*
