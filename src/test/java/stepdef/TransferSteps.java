@@ -5,11 +5,13 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import pages.HomePage;
 import pages.LoginPage;
 import pages.TransferPage;
 import utilities.ConfigReader;
+import utilities.WaitUtils;
 
 public class TransferSteps {
     WebDriver driver;
@@ -32,6 +34,13 @@ public class TransferSteps {
         homePage = new HomePage(driver);
         // click transfer funds to reach transfer page
         homePage.clickTransferFunds();
+        // wait explicitly for transfer page main field to appear to avoid timing issues
+        try{
+            WaitUtils.waitForVisibility(BrowserManager.getDriver(), By.name("amount"), 15);
+        } catch(Exception e){
+            // log and continue – TransferPage will also perform waits and will report failures with more detail
+            System.out.println("Warning: Amount field not immediately visible on Transfer Page. Timing issue possible.");
+        }
         transferPage = new TransferPage(driver);
     }
 

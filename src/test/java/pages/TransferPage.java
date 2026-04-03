@@ -31,10 +31,16 @@ public class TransferPage {
     public void enterAmount(String amount){
         WebDriverWait wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(10));
         Log4j.info(TransferPage.class, "Locating the element");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("amount")));
-        amountField.clear();
-        amountField.sendKeys(amount);
-        Log4j.info(TransferPage.class, "Entered amount: " + amount);
+        try{
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("amount")));
+            amountField.clear();
+            amountField.sendKeys(amount);
+            Log4j.info(TransferPage.class, "Entered amount: " + amount);
+        } catch(Exception e){
+            // log full stacktrace and rethrow so test runner sees the cause clearly
+            Log4j.error(TransferPage.class, "Failed to enter amount into transfer page", e);
+            throw new RuntimeException("Failed to enter amount on Transfer page", e);
+        }
     }
 
     public void clickTransfer(){
@@ -53,11 +59,16 @@ public class TransferPage {
             try{
                 return successMessage.getText();
             }catch(Exception e){
+                Log4j.warn(TransferPage.class, "Success message element not present, falling back to page title: " + driver.getTitle());
                 return driver.getTitle();
             }
         }catch(Exception e){
-            // fallback
-            try{ return driver.getTitle(); } catch(Exception ex){ return ""; }
+            // fallback - log details before returning an empty string so failures are easier to trace
+            Log4j.error(TransferPage.class, "Failed to determine transfer success message", e);
+            try{ return driver.getTitle(); } catch(Exception ex){
+                Log4j.error(TransferPage.class, "Also failed to read page title while determining success message", ex);
+                return "";
+            }
         }
     }
 }

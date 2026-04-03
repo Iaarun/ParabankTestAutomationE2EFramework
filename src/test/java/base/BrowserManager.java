@@ -19,7 +19,7 @@ public static WebDriver getDriver() {
              options.addArguments("--headless=new");
              options.addArguments("--window-size=1920,1080");
          }
-         options.addArguments("--headless");
+         //options.addArguments("--headless");
          dr = new ChromeDriver(options);
          dr.manage().window().maximize();
          dr.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
